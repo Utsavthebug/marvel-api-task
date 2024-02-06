@@ -1,13 +1,6 @@
-import { useNavigate,Link } from "react-router-dom";
+import {Link } from "react-router-dom";
 
 const NotFoundPage = () => {
-    const navigate = useNavigate()
-    
-    const goBack = ()=>{
-    //programatically going back 
-    navigate('/')
-    }
-
     return (
     <div className="flex  justify-center items-center h-full w-full bg-slate-50 dark:bg-slate-900">
         <div className="max-w-[450px] max-h-[400px]">
