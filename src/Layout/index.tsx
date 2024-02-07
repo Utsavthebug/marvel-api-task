@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen dark:bg-gray-700">
         <ThemeSwitch/>
         <Outlet/>
         </div>
