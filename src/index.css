@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Protest+Riot&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face{
+    font-family: "Protest Riot", sans-serif;
+    src:url('../public/fonts/ProtestRiot-Regular.ttf');
+}
 
 .selected{
     @apply bg-pink-100

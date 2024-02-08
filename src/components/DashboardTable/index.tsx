@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import Pagination from "../Pagination"
 import SearchBar from "../SearchBar"
-import getMarvelCharacters from "../../api/getMarvelCharacters"
-import TabeRow from "./TableRow"
+import {getMarvelCharacters} from "../../api/MarvelCharacters"
 import TableData from "./TableData"
 
 const DATA_COUNT= 20
