@@ -1,9 +1,25 @@
+import React from "react";
 import ReactPaginate from "react-paginate"
 
-const Pagination = () => {
-   const handlePageClick = (event:any)=>{
-    console.log(event)
-   }
+interface PaginationProps {
+  pageCount:number;
+  setOffset:React.Dispatch<React.SetStateAction<number>>
+}
+interface eventProps {
+  selected:number;
+}
+
+const DATA_COUNT= 20
+
+const Pagination : React.FC<PaginationProps> = ({
+  pageCount,
+  setOffset
+}) => {
+   const handlePageClick = (event:eventProps)=>{
+    const selected = Number(event.selected) + 1 
+    const offset = (selected-1) * DATA_COUNT 
+    setOffset(offset)
+  }
 
     return (
         <ReactPaginate
@@ -19,7 +35,7 @@ const Pagination = () => {
         onPageChange={handlePageClick}
         pageRangeDisplayed={2}
         marginPagesDisplayed={3}
-        pageCount={20}
+        pageCount={pageCount}
         pageLinkClassName={"w-8 h-8 p-3 rounded-full flex items-center justify-center"}
         previousLabel={<button
             disabled

@@ -1,13 +1,19 @@
 import MarvelAPi from ".."
 import { generateHash } from "../../utils/helpers"
 
-const getMarvelCharacters = (offset:number)=>{
-    const timeStamp = Date.now().toString()
-    const hash = generateHash(timeStamp)
-
-    const URL = `/characters/?ts=${hash}&apikey=${process.env.PUBLIC_KEY}&limit=20&offset=${offset}&hash=${hash}`
-    const characters = MarvelAPi.get(URL)
-    return characters
+const getMarvelCharacters = async(offset:number)=>{
+    try {
+        const ts = Date.now().toString()
+        const hash = generateHash(ts)
+        const URL = `/characters?ts=${ts}&apikey=${process.env.REACT_APP_PUBLIC_KEY}&limit=20?orderBy=name&offset=${offset}&hash=${hash}`
+        const characters = await MarvelAPi.get(URL)
+        console.log('xxx',characters)
+        return characters
+        
+    } catch (error) {
+        console.log(error)
+    }
+   
 }
 
 export default getMarvelCharacters

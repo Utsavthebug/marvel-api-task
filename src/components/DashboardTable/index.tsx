@@ -1,10 +1,89 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Pagination from "../Pagination"
 import SearchBar from "../SearchBar"
+import getMarvelCharacters from "../../api/getMarvelCharacters"
+import TabeRow from "./TableRow"
+import TableData from "./TableData"
+
+const DATA_COUNT= 20
+
+interface Thumbnail {
+    path: string;
+    extension: string;
+}
+
+interface Url {
+    type: string;
+    url: string;
+}
+
+interface ComicsData {
+    available: number;
+    collectionURI: string;
+    items: any[]; // Define the structure of comics items if needed
+    returned: number;
+}
+
+interface EventsData {
+    available: number;
+    collectionURI: string;
+    items: any[]; // Define the structure of events items if needed
+    returned: number;
+}
+
+interface SeriesData {
+    available: number;
+    collectionURI: string;
+    items: any[]; // Define the structure of series items if needed
+    returned: number;
+}
+
+interface StoriesData {
+    available: number;
+    collectionURI: string;
+    items: any[]; // Define the structure of stories items if needed
+    returned: number;
+}
+
+export interface Character {
+    id: number;
+    name: string;
+    description: string;
+    modified: string;
+    thumbnail: Thumbnail;
+    urls: Url[];
+    comics: ComicsData;
+    events: EventsData;
+    series: SeriesData;
+    stories: StoriesData;
+}
+
+
+interface CharacterProps {
+    count:number;
+    limit:number;
+    offset:number;
+    total:number;
+    results:Array<Character>
+
+}
+
 
 const DashboardTable = () => {
   //fetching marvel api and doing pagination
-  const [data,setData] = useState([])
+  const [data,setData] = useState<CharacterProps | null>(null)
+  const [offset,setOffset] = useState(0)
+
+  useEffect(()=>{
+   const fetchData = async()=>{
+    const response = await getMarvelCharacters(offset) 
+    setData(response?.data?.data)
+   }
+   fetchData()
+  },[offset])
+
+  console.log(data)
+ const pageCount = data?.total ? Math.ceil(data?.total/DATA_COUNT) : 0 
 
   return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -25,50 +104,17 @@ const DashboardTable = () => {
                 <th scope="col" className="px-6 py-3">
                     Name
                 </th>
-              
-                <th scope="col" className="px-6 py-3">
-                    Comics Appeared In Screen
-                </th>
 
                 <th scope="col" className="px-6 py-3">
                     Description
                 </th>
             </tr>
         </thead>
-        <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td className="p-4">
-                    <img src="/docs/images/products/apple-watch.png" className="w-16 md:w-32 max-w-full max-h-full" alt="Apple Watch"/>
-                </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                    Apple Watch
-                </td>
-                <td className="px-6 py-4">
-                    <div className="flex items-center">
-                        <button className="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                            <span className="sr-only">Quantity button</span>
-                            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
-                            </svg>
-                        </button>
-                        <div>
-                            <input type="number" id="first_product" className="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1" required/>
-                        </div>
-                        <button className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                            <span className="sr-only">Quantity button</span>
-                            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-                <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                    $599
-                </td>
-            </tr> 
-        </tbody>
+       <TableData
+       data={data?.results ?? []}
+       />
     </table>
-    <Pagination />
+    <Pagination pageCount={pageCount} setOffset={setOffset} />
 </div>
 
   )
