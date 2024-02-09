@@ -113,7 +113,7 @@ const Analytics = () => {
               name="comics"
               options={storiesDropdown}
               styles={{
-                control: (baseStyles, state) => ({
+                control: (baseStyles) => ({
                   ...baseStyles,
                   backgroundColor:IsDark?'#64748b':'#f1f5f9',
                   borderColor:IsDark?'#94a3b8':'#0f172a'
@@ -135,7 +135,7 @@ const Analytics = () => {
               onChange={handleComicsDropDownChange}
               classNamePrefix="select"
               styles={{
-                control: (baseStyles, state) => ({
+                control: (baseStyles) => ({
                   ...baseStyles,
                   backgroundColor:IsDark?'#64748b':'#f1f5f9',
                   borderColor:IsDark?'#94a3b8':'#0f172a'
@@ -156,7 +156,7 @@ const Analytics = () => {
               className="dark:bg-slate-500"
               onChange={handleSeriesDropDownChange}
               styles={{
-                control: (baseStyles, state) => ({
+                control: (baseStyles) => ({
                   ...baseStyles,
                   backgroundColor:IsDark?'#64748b':'#f1f5f9',
                   borderColor:IsDark?'#94a3b8':'#0f172a'

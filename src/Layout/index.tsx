@@ -1,5 +1,4 @@
 import Navbar from "../components/Navbar";
-import ThemeSwitch from "../components/ThemeSwitch/theme-switch"
 import { Outlet } from "react-router-dom";
 
 const Layout = () => {

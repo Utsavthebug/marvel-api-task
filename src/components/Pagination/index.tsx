@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { DiVim } from "react-icons/di";
 import ReactPaginate from "react-paginate"
 
 interface PaginationProps {

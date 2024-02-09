@@ -1,4 +1,4 @@
-import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar,  XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { BarDataType } from '../../pages/Analytics';
 import { useTheme } from '../../store/theme-context';
 import { useMediaQuery } from 'react-responsive'
