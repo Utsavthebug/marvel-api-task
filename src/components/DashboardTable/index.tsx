@@ -3,6 +3,7 @@ import Pagination from "../Pagination"
 import SearchBar from "../SearchBar"
 import {getMarvelCharacters} from "../../api/MarvelCharacters"
 import TableData from "./TableData"
+import { debounce } from "../../utils/helpers"
 
 const DATA_COUNT= 20
 
@@ -71,27 +72,38 @@ interface CharacterProps {
 const DashboardTable = () => {
   //fetching marvel api and doing pagination
   const [data,setData] = useState<CharacterProps | null>(null)
+  const [search,setSearch] = useState('')
   const [offset,setOffset] = useState(0)
 
-  useEffect(()=>{
-   const fetchData = async()=>{
-    const response = await getMarvelCharacters({offset}) 
+  const fetchData = async(skip:number)=>{
+    const response = await getMarvelCharacters({offset:skip,search}) 
     setData(response?.data?.data)
    }
-   fetchData()
+
+   const debouncedSearch = debounce(fetchData,500);
+
+   useEffect(()=>{
+    debouncedSearch(0)
+   },[search])
+
+  useEffect(()=>{ 
+   fetchData(offset)
   },[offset])
 
  const pageCount = data?.total ? Math.ceil(data?.total/DATA_COUNT) : 0 
 
- //programatically enabling and disabling previous and next page
+ //fetching search input in real time
 
   return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
     {/* search bar */}
-    <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-700">
+    <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 p-4 bg-white dark:bg-gray-700">
      <Pagination pageCount={pageCount} setOffset={setOffset} />
         <label htmlFor="table-search" className="sr-only">Search</label>
-        <SearchBar/>
+        <SearchBar
+        search={search}
+        setSearch={setSearch}
+        />
     </div>
 
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

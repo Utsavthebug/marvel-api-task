@@ -7,15 +7,17 @@ interface MarvelcharactersFetchType{
      comics:string;
      series:string;
      stories:string;
+     search:string;
 }
 
-export const getMarvelCharacters = async({limit=20,offset=0,comics,series,stories}: Partial<MarvelcharactersFetchType>)=>{
+export const getMarvelCharacters = async({limit=20,offset=0,comics,series,stories,search}: Partial<MarvelcharactersFetchType>)=>{
     try {
         const hashString = hashStringHelper()
         const URL = `/characters?orderBy=name&offset=${offset}&limit=${limit}&${hashString}` +
         `${stories ? `&stories=${stories}` : ''}` +
         `${comics ? `&comics=${comics}` : ''}` +
-        `${series ? `&series=${series}` : ''}`;
+        `${series ? `&series=${series}` : ''}` +
+        `${search ? `&nameStartsWith=${search}`:''}`;
         // const URL = `/characters?ts=${ts}&apikey=${process.env.REACT_APP_PUBLIC_KEY}&limit=20&orderBy=name&offset=${offset}&hash=${hash}`
         const characters = await MarvelAPi.get(URL)
         return characters
