@@ -81,15 +81,15 @@ const DashboardTable = () => {
    fetchData()
   },[offset])
 
-  console.log(data)
  const pageCount = data?.total ? Math.ceil(data?.total/DATA_COUNT) : 0 
+
+ //programatically enabling and disabling previous and next page
 
   return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
     {/* search bar */}
     <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-700">
-        <div>       
-        </div>
+     <Pagination pageCount={pageCount} setOffset={setOffset} />
         <label htmlFor="table-search" className="sr-only">Search</label>
         <SearchBar/>
     </div>
@@ -113,7 +113,6 @@ const DashboardTable = () => {
        data={data?.results ?? []}
        />
     </table>
-    <Pagination pageCount={pageCount} setOffset={setOffset} />
 </div>
 
   )
