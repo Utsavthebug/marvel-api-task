@@ -1,5 +1,6 @@
 import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { BarDataType } from '../../pages/Analytics';
+import { useTheme } from '../../store/theme-context';
 
 
 interface DataProps {
@@ -9,7 +10,7 @@ interface DataProps {
 const CustomTooltip = ({ active, payload, label }:any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="p-2 bg-green-300">
+      <div className="p-2 bg-green-300 dark:bg-green-600 dark:text-white">
         <p className="text-sm font-protest">{label}</p>
         <p className="text-sm font-protest">{`No. of Comics : ${payload[0].value}`}</p>
       </div>
@@ -38,7 +39,11 @@ const renderLegendContent = (props:any) => {
 
 
 
+
 const BarChartComponent : React.FC<DataProps> = ({data}) => {
+  const themeData = useTheme()
+  const {theme} = themeData
+  const IsDark = theme==="dark";
   return (
     <ResponsiveContainer width="100%" height="100%">
     <BarChart 
@@ -51,9 +56,12 @@ const BarChartComponent : React.FC<DataProps> = ({data}) => {
        />
       <XAxis dataKey={"name"} tickLine={false} interval={0} 
       tick={{fontSize:12,
-        fontWeight:'600',
- 
+        fontWeight:'600', 
+        stroke:IsDark?'#f1f5f9':'#1e293b'
       }} 
+      label={{
+        fill : IsDark ? '#ff0000':'black'
+      }}
       height={120}
       angle={-45}  
       textAnchor='end' 
@@ -61,7 +69,11 @@ const BarChartComponent : React.FC<DataProps> = ({data}) => {
       allowDataOverflow={true}
       />
       <Tooltip cursor={false} content={<CustomTooltip/>}/>
-      <YAxis/>
+      <YAxis
+      tick={{
+        stroke:IsDark?'#f1f5f9':'#1e293b'
+      }}
+      />
       <Legend 
       iconType='circle'
       align='center'

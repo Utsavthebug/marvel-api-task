@@ -112,11 +112,11 @@ const DashboardTable = () => {
                 <th scope="col" className="px-16 py-3">
                     <span className="sr-only">Image</span>
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 dark:text-white">
                     Name
                 </th>
 
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 dark:text-white">
                     Description
                 </th>
             </tr>

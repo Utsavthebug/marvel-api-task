@@ -7,6 +7,7 @@ import { formatFunction } from "../utils/helpers"
 import { getMarvelCharacters } from "../api/MarvelCharacters"
 import { getAllStories } from "../api/Stories"
 import type { Character } from "../components/DashboardTable"
+import { useTheme } from "../store/theme-context"
 
 
 export interface BarDataType{
@@ -95,18 +96,29 @@ const Analytics = () => {
     fetchCharacterData()
   },[ComicId,SeriesId,StoriesId])
 
+  //checking if dark or not
+  const themeData = useTheme()
+  const {theme} = themeData
+  const IsDark = theme==='dark';
 
   return (
       <div className="w-screen h-screen px-4 py-5 flex flex-col gap-[70px]">
         {/* Filtering Characters */}
-        <div className="grid grid-cols-1 md:gap-7 md:grid-cols-3">
+        <div className="grid w-[90%] mx-auto grid-cols-1 md:gap-7 md:grid-cols-3">
             {/* Filter by name */}
             <div className="mb-5">
-            <label className="text-sm font-bold">Filter By Stories</label>
+            <label className="text-sm font-bold dark:text-white">Filter By Stories</label>
             <Select
               isMulti
               name="comics"
               options={storiesDropdown}
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  backgroundColor:IsDark?'#64748b':'#f1f5f9',
+                  borderColor:IsDark?'#94a3b8':'#0f172a'
+                  }),
+              }}
               onChange={handleStoriesDropDownChange}
             />
         </div>
@@ -114,26 +126,42 @@ const Analytics = () => {
 
         {/* Filter by Comics */}
         <div className="mb-5">
-            <label className="text-sm font-bold">Filter By Comics</label>
+            <label className="text-sm font-bold dark:text-white">Filter By Comics</label>
             <Select
               isMulti
               name="comics"
               options={comicsDropdown}
+              className="dark:bg-slate-500"
               onChange={handleComicsDropDownChange}
               classNamePrefix="select"
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  backgroundColor:IsDark?'#64748b':'#f1f5f9',
+                  borderColor:IsDark?'#94a3b8':'#0f172a'
+                  }),
+              }}
            
             />
            
         </div>
 
         <div className="mb-5">
-            <label className="text-sm font-bold">Filter By Series</label>
+            <label className="text-sm font-bold dark:text-white">Filter By Series</label>
             <Select
               isMulti
               name="series"
               options={seriesDropDown}
               classNamePrefix="select"
+              className="dark:bg-slate-500"
               onChange={handleSeriesDropDownChange}
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  backgroundColor:IsDark?'#64748b':'#f1f5f9',
+                  borderColor:IsDark?'#94a3b8':'#0f172a'
+                  }),
+              }}
             />
             </div>      
         </div>
