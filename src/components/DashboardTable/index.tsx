@@ -75,7 +75,7 @@ const DashboardTable = () => {
 
   useEffect(()=>{
    const fetchData = async()=>{
-    const response = await getMarvelCharacters(offset) 
+    const response = await getMarvelCharacters({offset}) 
     setData(response?.data?.data)
    }
    fetchData()

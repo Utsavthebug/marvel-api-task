@@ -1,17 +1,21 @@
 import MarvelAPi from ".."
-import { generateHash } from "../../utils/helpers"
+import { hashStringHelper } from "../../utils/helpers"
 
-export const hashStringHelper = ()=>{
-    const ts = Date.now().toString()
-    const hash = generateHash(ts)
-    const hashkeystring = `ts=${ts}&apikey=${process.env.REACT_APP_PUBLIC_KEY}&hash=${hash}`
-    return hashkeystring
+interface MarvelcharactersFetchType{
+     limit:number;
+     offset:number;
+     comics:string;
+     series:string;
+     stories:string;
 }
 
-export const getMarvelCharacters = async(offset:number)=>{
+export const getMarvelCharacters = async({limit=20,offset=0,comics,series,stories}: Partial<MarvelcharactersFetchType>)=>{
     try {
         const hashString = hashStringHelper()
-        const URL = `/characters?orderBy=name&offset=${offset}&limit=20&${hashString}`
+        const URL = `/characters?orderBy=name&offset=${offset}&limit=${limit}&${hashString}` +
+        `${stories ? `&stories=${stories}` : ''}` +
+        `${comics ? `&comics=${comics}` : ''}` +
+        `${series ? `&series=${series}` : ''}`;
         // const URL = `/characters?ts=${ts}&apikey=${process.env.REACT_APP_PUBLIC_KEY}&limit=20&orderBy=name&offset=${offset}&hash=${hash}`
         const characters = await MarvelAPi.get(URL)
         return characters
@@ -20,6 +24,20 @@ export const getMarvelCharacters = async(offset:number)=>{
         console.log(error)
     }
 }
+
+
+// export const getMarvelCharacters = async(offset:number=0,comics?:string,series?:string)=>{
+//     try {
+//         const hashString = hashStringHelper()
+//         const URL = `/characters?orderBy=name&offset=${offset}&limit=20&${hashString}${comics && `&comics=${comics}`}`
+//         // const URL = `/characters?ts=${ts}&apikey=${process.env.REACT_APP_PUBLIC_KEY}&limit=20&orderBy=name&offset=${offset}&hash=${hash}`
+//         const characters = await MarvelAPi.get(URL)
+//         return characters
+        
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 
 export const getMarvelCharacterDetail = async(id:string)=>{
     try {

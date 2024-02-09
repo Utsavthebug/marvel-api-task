@@ -8,8 +8,43 @@ export const generateHash = (timestamp:string)=>{
     return hash
 }
 
-export const range = (start:number, end:number) => {
-    let length = end - start + 1;
-    return Array.from({ length }, (_, idx) => idx + start);
+
+  export const hashStringHelper = ()=>{
+    const ts = Date.now().toString()
+    const hash = generateHash(ts)
+    const hashkeystring = `ts=${ts}&apikey=${process.env.REACT_APP_PUBLIC_KEY}&hash=${hash}`
+    return hashkeystring
+}
+
+//function to transform data to dropdown
+export const formatFunction = (data:any)=>{
+    const formattedData =  data?.map((d:any)=> (
+      {
+        value:d?.id,
+        label:d?.title
+      }
+    ))
+    return formattedData;
+  }
+
+
+//debounce function 
+export const debounce = <F extends (...args: any[]) => any>(
+  func: F,
+  delay: number
+): ((...args: Parameters<F>) => void) => {
+  let timeoutId: ReturnType<typeof setTimeout> | null;
+
+  return (...args: Parameters<F>) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => {
+      func(...args);
+      timeoutId = null;
+    }, delay);
   };
+};
+
 
