@@ -1,6 +1,8 @@
 import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { BarDataType } from '../../pages/Analytics';
 import { useTheme } from '../../store/theme-context';
+import { useMediaQuery } from 'react-responsive'
+
 
 
 interface DataProps {
@@ -44,6 +46,8 @@ const BarChartComponent : React.FC<DataProps> = ({data}) => {
   const themeData = useTheme()
   const {theme} = themeData
   const IsDark = theme==="dark";
+
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   return (
     <ResponsiveContainer width="100%" height="100%">
     <BarChart 
@@ -54,7 +58,7 @@ const BarChartComponent : React.FC<DataProps> = ({data}) => {
       dataKey="comicsCount" 
       fill="#4ade80"
        />
-      <XAxis dataKey={"name"} tickLine={false} interval={0} 
+      <XAxis dataKey={"name"} tickLine={false} interval={isTabletOrMobile?"preserveStart":0} 
       tick={{fontSize:12,
         fontWeight:'600', 
         stroke:IsDark?'#f1f5f9':'#1e293b'
